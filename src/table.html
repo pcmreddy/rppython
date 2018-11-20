@@ -1,0 +1,69 @@
+<html lang="en-US">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+<body>
+
+<div ng-app="myApp" ng-controller="customersCtrl">
+  <h2 class="text-center">AngularJS sortable table example</h2>
+
+  <div class="text-center">
+    <strong>Note:</strong> click on table heading and change order
+  </div>
+
+  <div class="container">
+    <table class="table table-bordered">
+      <tr>
+        <th ng-click="sortBy('language')">Language</th>
+        <th ng-click="sortBy('developer')">Total Developer</th>
+      </tr>
+
+      <tr ng-repeat="x in names | orderBy:sortField:reverseOrder">
+        <td>{{ x.language }}</td>
+        <td>{{ x.developer }}</td>
+      </tr>
+
+    </table>
+    <h1>{{ myData }}</h1>
+    <B>{{ myJSON }}</B>
+  </div>
+</div>
+
+<script>
+
+var app = angular.module('myApp', []);
+
+
+app.controller('customersCtrl', function($scope, $http) {
+
+    var myurl = 'http://api.geonames.org/citiesJSON?north=44.1&south=-9.9&east=-22.4&west=55.2&lang=de&username=demo';
+    $scope.names = [
+       {'language': 'PHP', 'developer': '11' }, 
+       {'language': 'Laravel', 'developer': '12'},
+       {'language': 'Angular JS', 'developer': '23'},
+       {'language': 'Jquery', 'developer': '25'},
+       {'language': 'Java', 'developer': '21'},
+       {'language': 'Facebook API', 'developer': '26'},
+    ];
+
+    $scope.reverseOrder = true;
+    $scope.sortField = 'developer';
+
+    $scope.sortBy = function(sortField) {
+       $scope.reverseOrder = ($scope.sortField === sortField) ? !$scope.reverseOrder : false;
+       $scope.sortField = sortField;
+    };
+
+    $http.get(myurl)
+    .then(function(response) {
+        $scope.myData = (response.data)['status']['value'];
+        $scope.myJSON = response.data;
+    });
+
+}
+);
+</script>
+
+</body>
+</html> 

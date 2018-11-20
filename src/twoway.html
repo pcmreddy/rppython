@@ -1,0 +1,25 @@
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<body>
+<div ng-app="mySApp" ng-controller="myCtrl">
+    First Name: <input ng-model="firstname"> <br> 
+    Last Name: <input ng-model="lastname"> <br>
+    Value : <input ng-model="myValue">
+    <h1>{{ firstname + ' - ' + lastname }}</h1>
+    <h1>{{ myValue }}</h1>
+</div>
+
+<script>
+ var app = angular.module('mySApp', []);
+ app.controller('myCtrl', function($scope, $http) {
+ var myurl = 'http://api.geonames.org/citiesJSON?north=44.1&south=-9.9&east=-22.4&west=55.2&lang=de&username=demo';
+    $scope.firstname = "John";
+    $scope.lastname = "Doe";
+    $http.get(myurl)
+    .then(function(response) {
+        $scope.myValue = (response.data)['status']['value'];
+    });
+ });
+</script>
+</body>
+</html>
