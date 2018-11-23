@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import SimpleHTTPServer
+
 class CORSHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def send_head(self):
         """Common code for GET and HEAD commands.
@@ -16,6 +17,9 @@ class CORSHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             if not self.path.endswith('/'):
                 # redirect browser - doing basically what apache does
                 self.send_response(301)
+                self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+                self.send_header("Pragma", "no-cache")
+                self.send_header("Expires", "0")
                 self.send_header("Location", self.path + "/")
                 self.end_headers()
                 return None
@@ -60,5 +64,8 @@ if __name__ == "__main__":
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
-        pass
-    httpd.server_close()
+        print ("Stopping .....")
+        httpd.shutdown()
+    finally:
+        httpd.shutdown()
+        httpd.server_close()

@@ -10,31 +10,28 @@
   <div class="container">
     <table class="table table-bordered">
       <tr>
+        <th ng-click="sortBy('project')">Project</th>
         <th ng-click="sortBy('language')">Language</th>
         <th ng-click="sortBy('developer')">Total Developer</th>
       </tr>
       <tr ng-repeat="x in names | orderBy:sortField:reverseOrder">
+        <td>{{ x.project }}</td>
         <td>{{ x.language }}</td>
         <td>{{ x.developer }}</td>
       </tr>
     </table>
+    <!--
     <h1>{{ myData }}</h1>
     <B>{{ myJSON }}</B>
+    -->
   </div>
 </div>
 
 <script>
 var app = angular.module('myApp', []);
+
 app.controller('customersCtrl', function($scope, $http) {
     var myurl = 'http://localhost:8000/list.json';
-    //$scope.names = [
-    //   {'language': 'PHP', 'developer': '11' }, 
-    //   {'language': 'Laravel', 'developer': '12'},
-    //   {'language': 'Angular JS', 'developer': '23'},
-    //   {'language': 'Jquery', 'developer': '25'},
-    //   {'language': 'Java', 'developer': '21'},
-    //   {'language': 'Facebook API', 'developer': '26'},
-    //];
     $scope.reverseOrder = true;
     $scope.sortField = 'developer';
     $scope.sortBy = function(sortField) {
@@ -44,8 +41,8 @@ app.controller('customersCtrl', function($scope, $http) {
     $http.get(myurl)
     .then(function(response) {
         $scope.names = (response.data)['names'];
-        $scope.myData = (response.data)['names'];
-        $scope.myJSON = response.data;
+        //$scope.myData = (response.data)['names'];
+        //$scope.myJSON = response.data;
     });
 }
 );
