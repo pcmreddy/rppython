@@ -1,1 +1,3 @@
-mipiw*
+{
+  status: "mipiw*"
+}
